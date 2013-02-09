@@ -30,9 +30,10 @@ set nobomb
 "set bomb
 
 "set mouse=a
+set paste
 
 " 過長不要斷行
-"set nowrap
+set nowrap
 
 " 設定營幕能顯示多少就多少, 不要過長顯示 @
 set display=lastline
@@ -313,4 +314,44 @@ augroup AutoLoadSettion
     au VimEnter * call AutoLoadSession()
     au VimLeave * call AutoSaveSession()
 augroup END
+" }}}
+" {{{ for Bundle
+filetype off
+filetype plugin indent on     " required!
+set rtp+=~/.workenv/vundle/
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+" original repos on github
+Bundle 'tpope/vim-fugitive'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+Bundle 'tpope/vim-rails.git'
+
+" vim-scripts repos
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+Bundle 'taglist.vim'
+Bundle 'SuperTab'
+Bundle 'vimwiki'
+Bundle 'winmanager'
+Bundle 'bufexplorer.zip'
+Bundle 'The-NERD-tree'
+Bundle 'matrix.vim--Yang'
+Bundle 'FencView.vim'
+Bundle 'Conque-Shell'
+Bundle 'Vimpress'
+Bundle 'Markdown'
+Bundle 'LaTeX-Suite-aka-Vim-LaTeX'
+Bundle 'c.vim'
+Bundle 'snipMate'
+
+" non github repos
+Bundle 'git://git.wincent.com/command-t.git'
+
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
 " }}}

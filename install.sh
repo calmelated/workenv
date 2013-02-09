@@ -30,8 +30,8 @@ ln  -sf .workenv/vimrc      .vimrc
 #ln -sf .workenv/.vim/.vimrc .vimrc
 #cd "${CONFIG_HOME}/.vim"
 #git submodule update --init
+cd "$CONFIG_HOME"
+rm -rf vundle
+git clone https://github.com/gmarik/vundle.git
 
 echo "Configuration files has been installed."
-cd "$CONFIG_HOME"
-
-
