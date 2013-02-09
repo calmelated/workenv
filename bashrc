@@ -25,6 +25,7 @@ if [ "$PS1" ]; then
 
     # some more ls aliases
     alias ll='ls -l --color | less -r'
+    alias ll='ls -l --color'
     alias la='ls -A'
     alias l='ls -CF'
     alias vi='vim'
@@ -33,8 +34,8 @@ if [ "$PS1" ]; then
     alias diff='colordiff'
     alias top='htop'
     alias tmux='TERM=xterm-256color tmux -2'
-    alias b="echo export LANG=zh_TW.Big5;echo export LC_ALL=zh_TW.Big5"
-    alias u="echo export LANG=zh_TW.UTF-8;echo export LC_ALL=zh_TW.UTF-8"
+    #alias b="echo export LANG=zh_TW.Big5;echo export LC_ALL=zh_TW.Big5"
+    #alias u="echo export LANG=zh_TW.UTF-8;echo export LC_ALL=zh_TW.UTF-8"
     alias g++='g++ -Wno-deprecated'
     alias halt='sudo shutdown -h now'
     alias reboot='sudo shutdown -r now'
@@ -77,7 +78,7 @@ export PATH=$HOME/bin:$PATH
 export EDITOR=vim
 
 # 設 less
-export LC_CTYPE=it_CH.ISO_8859-1
+#export LC_CTYPE=it_CH.ISO_8859-1
 
 export MYSQL_PS1="(\u@\h) [\d]> "
 
