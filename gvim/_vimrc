@@ -1,0 +1,367 @@
+set nocompatible
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let eq = ''
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      let cmd = '""' . $VIMRUNTIME . '\diff"'
+      let eq = '"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
+
+"gvim setting
+"colorscheme desert
+"colorscheme ir_black
+"set guifont=mingliu:h12
+
+" ??????
+"set keywordprg=~/bin/ydict
+"set complete-=k complete+=k
+
+" ?? vim ????????, ??? mkdir ~/vi_backup/
+"set backupdir=~/vi_backup/
+set nobackup
+
+" set php pear path
+"set path+=/usr/share/php
+
+" set <leader>
+let mapleader=","
+" map <Leader>h :echo "Hello world."<CR>
+
+"security
+set nomodeline
+
+" ?????, ????? backspace, del ?????
+set bs=2
+
+"?? UTF-8 BOM
+set nobomb
+" ?? BOM
+"set bomb
+
+"set mouse=a
+set paste
+
+" ??????
+set nowrap
+
+" ????????????, ?????? @
+set display=lastline
+
+" ??????, ??????, ????? (0 ??????)
+set textwidth=0
+
+" ?????? hilight
+set hlsearch
+set incsearch
+
+" ?????, ??????
+"set ignorecase
+
+" terminal title ??? filename
+set title
+
+"set runtimepath=~/.vim,$VIMRUNTIME
+set history=50
+
+filetype on
+set number
+set cindent
+"set autoindent
+"set smartindent
+
+" \t ?? 4?????
+set expandtab
+set shiftwidth=4
+set softtabstop=4
+set tabstop=4
+
+" :sp ???, ?????????
+set wildmenu
+
+" ??? {{{ }}} ?? Folded
+set foldmethod=marker
+
+" vim ?? 256?
+set t_Co=256
+
+" html indent ??? *.php
+filetype indent on
+filetype plugin indent on " Enable filetype-specific indenting and plugins
+
+" retab
+set list
+set listchars=tab:->,trail:.
+
+" {{{ syntax highlight
+syntax on
+":highlight ?????????
+" ?? Templates
+" /usr/share/vim/vim70/colors/desert.vim
+"colorscheme default
+"colorscheme desert
+"colorscheme darkblue
+"hi Comment ctermbg=black ctermfg=darkcyan
+hi Comment term=standout cterm=bold ctermfg=0
+hi Search term=reverse ctermbg=3 ctermfg=0
+hi Folded ctermbg=black ctermfg=darkcyan
+hi Cursor ctermbg=Gray ctermfg=Blue
+"hi Visual ctermbg=yellow ctermfg=blue
+hi clear SpellBad
+hi SpellBad term=underline cterm=underline ctermfg=red
+"highlight Normal ctermbg=black ctermfg=white
+"set background=light
+" ????????
+set formatoptions=mtcq
+"Show matching parenthese.
+set showmatch
+" ????
+color koehler
+"set gvim font
+set guifont=courier\ new:h12
+" }}}
+
+" {{{ ?????? bar.
+set laststatus=2
+set statusline=%4*%<\ %1*[%F]
+set statusline+=%4*\ %5*[%{&encoding}, " encoding
+"set statusline+=%{&fileformat}]%m " file format
+set statusline+=%{&fileformat}%{\"\".((exists(\"+bomb\")\ &&\ &bomb)?\",BOM\":\"\").\"\"}]%m " file format & bomb detect
+set statusline+=%4*%=\ %6*%y%4*\ %3*%l%4*,\ %3*%c%4*\ \<\ %2*%P%4*\ \>
+highlight User1 ctermfg=red
+highlight User2 term=underline cterm=underline ctermfg=green
+highlight User3 term=underline cterm=underline ctermfg=yellow
+highlight User4 term=underline cterm=underline ctermfg=white
+highlight User5 ctermfg=cyan
+highlight User6 ctermfg=white
+
+"set ls=2
+"set statusline=%<%f\ %m%=\ %h%r\ %-19([%p%%]\ %3l,%02c%03V%)%y
+"highlight StatusLine term=bold,reverse cterm=bold,reverse
+""highlight StatusLine ctermfg=2 ctermbg=0
+""highlight StatusLine ctermfg=blue ctermbg=white
+" }}}
+
+" {{{ ? ultraedit ????????
+" Line highlight
+set cursorline
+" Column highlight
+" set cursorcolumn
+"highlight CursorLine cterm=none ctermbg=blue
+highlight CursorLine cterm=bold ctermbg=4
+" insert ???, ? CursorLine ??
+au InsertEnter * set nocul
+au InsertLeave * set cul
+" }}}
+
+" {{{ UTF-8 Big5 Setting
+" ???????utf-8??
+" "set fileencoding=utf-8
+" "
+" " ???????. vim ????? utf-8 ???.
+"set fileencoding=utf-8
+"set fileencodings=big5,utf-8
+"set termencoding=utf-8
+"??????? UTF-8 ??
+" vim ???????? utf-8 ??(??)
+set fileencoding=utf-8
+" vim ???????? utf-8 ??(??)
+set fileencodings=utf-8,big5,euc-jp,gbk,euc-kr,utf-bom,iso8859-1
+" ?????encode(vim ????? encode)
+"set encoding=utf8
+set tenc=utf8
+" ?? <F12> ????????? Big5
+map <F12> :set tenc=big5<cr>
+
+" vim ???,??? utf-8 ??
+" ???????
+" set termencoding=big5
+" ? Terminal.app ? Display > encoding ??? Big5-hkscs,???? terminal
+" ???????? big5 ?????? vim ?,vim ???????,??? big5 ???
+" ??????? utf-8 ??????? Terminal.app ?? utf-8
+" ??,???????
+" }}}
+" {{{ For PHP Hot Key
+" Map ; to run PHP parser check
+"noremap ; :!php -l %<CR>
+" Map <CTRL>-P to run actual file with PHP CLI
+"noremap <C-P> :w!<CR>:!php %<CR>
+" Map <CTRL>-M to search phpm for the function name currently under the cursor (insert mode only)
+"inoremap <C-H> <ESC>:!phpm <C-R>=expand("<cword>")<CR><CR>
+" Automatic close char mapping
+"inoremap  { {<CR>}<C-O>O
+"inoremap [ []<LEFT>
+"inoremap ( ()<LEFT>
+"inoremap " ""<LEFT>
+"inoremap ' ''<LEFT>
+" }}}
+
+" {{{ ??? F8 (Tlist, function list)
+"source $HOME/.vim/phpdoc.vim
+"ctags apt-get install exuberant-ctags
+" }}}
+" {{{ ctrl + n, ctrl + p(????function??) - php
+"set dictionary+=~/.vim/funclist.txt
+" }}}
+
+" {{{ vim ? tab => imap <C-n> <Esc>:w<CR><Esc>
+" NERDTree ??? q ??
+nnoremap <silent> <F5> :NERDTree<CR>
+nnoremap <silent> <F8> :Tlist<CR>
+nnoremap <silent> <F9> :set paste<CR>
+"nnoremap <silent> <F6> :tabn<CR>
+"nnoremap <C-n> <Esc>:tabnew<CR><Esc>:e
+map <F2> :set spell!<CR><Bar>:echo "Spell check: " . strpart("OffOn", 3 * &spell, 3)<CR>
+"map <F3> :set cursorline!<CR><Bar>:echo "Highlight active cursor line: " . strpart("OffOn", 3 * &cursorline, 3)<CR>
+map <C-t>l <ESC>:tabnext<CR>
+map <C-t>h <ESC>:tabprev<CR>
+map <C-t>n <ESC>:tabnew<CR>:NERDTree<CR>
+map <C-t>c <ESC>:tabclose<CR>
+map <C-t>0 <ESC>:tabfirst<CR>
+map <C-t>$ <ESC>:tablast<CR>
+map <C-t>q <ESC>:qall<CR>
+":nmap <C-t> :tabnew<cr>
+"map <C-t>n <ESC>:tabnew<CR><ESC>:e
+":nmap <C-tab> :tabnext<cr>
+"map <C-w> <ESC>:tabclose<CR>
+
+" vim -p filename1 filname2
+" :tabe filename
+" gt
+" Ctrl-x Ctrl-o
+" Ctrl+n ??????,
+" Ctrl+n Ctrl+p ??????, ??????? function
+" :setlocal spell spelllang=en_gb
+" ]s - move to next spelling error
+" z= - spelling suggestion
+" }}}
+
+" {{{ ???????????
+if has("autocmd")
+    autocmd BufRead *.txt set tw=78
+    autocmd BufReadPost *
+    \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+    \   exe "normal g'\"" |
+    \ endif
+endif
+" }}}
+
+" {{{ save .vimrc, auto exec, .vimrc ????, ??????
+autocmd! bufwritepost .vimrc source %
+" }}}
+
+" {{{ ??????????
+" Remove trailing whitespaces
+" map \ :%s/[     ]*$//g
+map \ :%s/\s*$//g
+
+" ???????????
+autocmd FileType c,cpp,java,php,perl,python,ruby,sh autocmd BufWritePre  :call setline(1,map(getline(1,"$"),'substitute(v:val,"\\s\\+$","","")'))
+
+" ?? ? ????
+map <f11> <esc>1G=G<cr><esc>:%s/\s*$//<cr><esc>:noh<cr>
+
+"http://blog.bs2.to/post/EdwardLee/17961
+" Remove trailing whitespace when writing a buffer, but not for diff files.
+" From: Vigil
+function! RemoveTrailingWhitespace()
+    if &ft != "diff"
+        let b:curcol = col(".")
+        let b:curline = line(".")
+        silent! %s/\s\+$//
+        silent! %s/\(\s*\n\)\+\%$//
+        call cursor(b:curline, b:curcol)
+    endif
+endfunction
+autocmd BufWritePre * call RemoveTrailingWhitespace()
+" }}}
+" {{{ tab ?????, ???????.
+" <s-v> + <tab> ? <s-v> + <s-tab>
+xmap   <tab> >gv
+xmap   <s-tab> <gv
+" }}}
+
+" {{{ python indent
+" ?? Python ????????? Folding ????
+" ??? Tab ???? 4 ???
+" ??????? K ??? ipython ???????
+" ?????? :Man list ?????
+" ????? script ?? .vimrc ????????
+function! s:python_custom()
+    function! s:man(keyword)
+        echo system('ipython -quick -c "help ' . a:keyword . '"')
+    endfunction
+    setlocal tabstop=4 expandtab shiftwidth=4
+    setlocal foldnestmax=2 foldmethod=indent foldcolumn=3 foldlevel=2
+    command! -nargs=1 Man call s:man(<f-args>)
+    cnoremap K viwy:Man <C-R>"<CR>
+endfunction
+if has("autocmd")
+    autocmd Filetype python call s:python_custom()
+endif
+" }}}
+
+" {{{ Tab ??
+highlight TabLine ctermbg=white ctermfg=black
+highlight TabLineFill ctermbg=black
+highlight TabLineSel ctermbg=blue ctermfg=white
+
+"hi TabLineFill guifg=#90fff0 guibg=#2050d0 ctermfg=white ctermbg=lightblue
+"hi TabLine guifg=#90fff0 guibg=#2050d0 ctermfg=black ctermbg=white
+"hi TabLineSel guifg=#90fff0 guibg=#2050d0 ctermfg=white ctermbg=LightMagenta
+" }}}
+
+" {{{ ???? load session (Tab)
+" Session:
+function! AutoLoadSession()
+    let g:sessionfile = getcwd() . "/Session.vim"
+    if (argc() == 0 && filereadable(g:sessionfile))
+        echohl WarningMsg
+        echo "Session file exists. Load this? (y/n): "
+        echohl None
+        while 1
+            let c = getchar()
+            if c == char2nr("y")
+                so Session.vim
+                return
+            elseif c == char2nr("n")
+                return
+            endif
+        endwhile
+    endif
+endfunction
+
+function! AutoSaveSession()
+    if exists(g:sessionfile)
+        exe "mks! " .
+        g:sessionfile
+    endif
+endfunction
+
+augroup AutoLoadSettion
+    au!
+    au VimEnter * call AutoLoadSession()
+    au VimLeave * call AutoSaveSession()
+augroup END
+" }}}
+
