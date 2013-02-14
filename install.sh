@@ -19,6 +19,7 @@ git submodule update --init
 
 cd ~
 #ln -sf .workenv/zshrc      .zshrc
+ln -sf .workenv/bin         bin
 ln -sf .workenv/bashrc      .bashrc
 ln -sf .workenv/screenrc    .screenrc
 ln -sf .workenv/tmux.conf   .tmux.conf

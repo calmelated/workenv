@@ -24,15 +24,25 @@ if [ "$PS1" ]; then
     #alias vdir='ls --color=auto --format=long'
 
     # some more ls aliases
-    alias ll='ls -l --color | less -r'
-    alias ll='ls -l --color'
-    alias la='ls -A'
-    alias l='ls -CF'
+    #alias cd="$HOME/.workenv/bin/cdecd"
+    #alias make="$HOME/.workenv/bin/cdemake"
+    alias ll='ls -lh --color'
+    alias lr='ls -lh --color | less -r'
+    alias ll='ls -lh --color'
+    alias dir='ls -lh --color'
+    alias la='ls -Ah'
+    alias l='ls -CFh'
     alias vi='vim'
     alias d='ls */ -d'
-    alias grep='grep --color'
-    alias diff='colordiff'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias cgrep='grep -Hnr --include=*.{c,h} --color=auto'
+    alias diff='colordiff -Naur'
     alias top='htop'
+    alias route='route -n'
+    alias ps='ps -ef'
+    alias indent='indent -kr -st -i4 cli4 -nut'
     alias tmux='TERM=xterm-256color tmux -2'
     #alias b="echo export LANG=zh_TW.Big5;echo export LC_ALL=zh_TW.Big5"
     #alias u="echo export LANG=zh_TW.UTF-8;echo export LC_ALL=zh_TW.UTF-8"
@@ -46,6 +56,16 @@ if [ "$PS1" ]; then
     alias apachemon='while :; do ps -eo pid,ni,pri,pcpu,psr,comm | grep "apache"; sleep 1; done';
     alias mysqlmon='while :; do ps -eo pid,ni,pri,pcpu,psr,comm | grep "mysql"; sleep 1; done';
     alias topthreads="find /proc/*/status -exec awk '/^Pid:/ { p=\$2}; /^Name:/ { n=\$2}; /^Threads:/ { t=\$2}; END{ printf(\"%6d %-30s %5d\n\", p, n, t);}' {} \; | sort -k3 -g -r | head -10"
+    alias ..='cd ..'
+    alias ...='cd ../..'
+    alias ....='cd ../../..'
+    alias .....='cd ../../../..'
+    alias .....='cd ../../../../..'
+    alias cd..='cd ..'
+    alias cd...='cd ../..'
+    alias cd....='cd ../../..'
+    alias cd.....='cd ../../../..'
+    alias cd.....='cd ../../../../..'
 
     # set a fancy prompt
     PS1='\u@\h:\w\$ '
@@ -71,11 +91,14 @@ fi
 set nobeep
 # xwindow 要用這個關
 #xset b off
+setterm -blength 0
 
 export PATH=$HOME/bin:$PATH
 #export LANG=zh_TW.UTF-8
 #export LC_ALL=zh_TW.UTF-8
 export EDITOR=vim
+export SVN_EDITOR=vim
+export GREP_OPTIONS="--exclude=.svn --exclude=.git"
 
 # 設 less
 #export LC_CTYPE=it_CH.ISO_8859-1
@@ -101,4 +124,5 @@ function git_branch {
 }
 #PS1="[\[\033[1;32m\]\w\[\033[0m] \[\033[0m\]\[\033[1;36m\]\$(git_branch)\[\033[0m\]$ "
 #PS1=$PS1"\$(git_branch)"
-PS1="\u@\h:\w\$(git_branch)\$ "
+#PS1="\u@\h:\w\$(git_branch)\$ "
+PS1="\[\033[1;33m\]\u\[\033[1;37m\]@\[\033[1;32m\]\h\[\033[1;37m\]:\[\033[1;31m\]\w\$(git_branch)\[\033[1;36m\]\$ \[\033[0m\]"

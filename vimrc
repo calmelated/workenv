@@ -183,13 +183,14 @@ set dictionary+=~/.vim/funclist.txt
 " }}}
 " {{{ vim 開 tab => imap <C-n> <Esc>:w<CR><Esc>
 " NERDTree 關閉按 q 即可
+nnoremap <silent> <F2> :w!<CR>
+"map <F3> :set cursorline!<CR><Bar>:echo "Highlight active cursor line: " . strpart("OffOn", 3 * &cursorline, 3)<CR>
+map <F4> :set spell!<CR><Bar>:echo "Spell check: " . strpart("OffOn", 3 * &spell, 3)<CR>
 nnoremap <silent> <F5> :NERDTree<CR>
 nnoremap <silent> <F8> :Tlist<CR>
 nnoremap <silent> <F9> :set paste<CR>
 "nnoremap <silent> <F6> :tabn<CR>
 "nnoremap <C-n> <Esc>:tabnew<CR><Esc>:e
-map <F2> :set spell!<CR><Bar>:echo "Spell check: " . strpart("OffOn", 3 * &spell, 3)<CR>
-"map <F3> :set cursorline!<CR><Bar>:echo "Highlight active cursor line: " . strpart("OffOn", 3 * &cursorline, 3)<CR>
 map <C-t>l <ESC>:tabnext<CR>
 map <C-t>h <ESC>:tabprev<CR>
 map <C-t>n <ESC>:tabnew<CR>:NERDTree<CR>
