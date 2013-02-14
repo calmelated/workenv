@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "=========== Post rootfs ========="
+echo "TOPDIR=$1"
+echo "PRJ_ID=${1##*/}"
+

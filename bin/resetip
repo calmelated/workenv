@@ -1,0 +1,7 @@
+#!/bin/sh
+
+[ "`id -u`" != "0" ] &&  echo "Only root priviliges" && exit 0
+
+vim /etc/sysconfig/network-scripts/ifcfg-eth0
+sudo /etc/init.d/network restart
+

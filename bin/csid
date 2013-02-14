@@ -1,0 +1,35 @@
+#!/bin/sh
+
+cpath="`pwd`"
+while :; do
+    if [ -d linux -a -d image ]; then 
+        break 
+    else 
+        cpath="${cpath%/*}"
+        if [ "$cpath" = "" ]; then
+            echo "Can't find Turfan project"
+            exit 0
+        else 
+            cd "$cpath"
+        fi
+    fi
+done
+
+cd rootfs/amit_open/OasisHeader.10.mk
+orig_ver="`grep REV Makefile |grep "\-r"|awk '{print $4}'`"
+
+svn up
+svn_ver="`grep REV Makefile |grep "\-r"|awk '{print $4}'`"
+
+cd ../../src/amit_open/OasisHeader/csid/
+head_ver="`svn log -r head --limit 1|awk '{if(NR == 2)print $1}'`"
+
+if [ "$head_ver" != "$orig_ver" ]; then
+    cd ../../../../amit_open/OasisHeader.10.mk
+    sed -i -e "s/COMPO_REV := -r ${orig_ver#r}/COMPO_REV := -r ${head_ver#r}/g" Makefile
+    make clean
+    make 
+fi
+
+echo "CSID Version: "
+echo "Head: ${head_ver#r}, Project: $svn_ver, Orig: $orig_ver"

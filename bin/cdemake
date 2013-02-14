@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ "$1" == "--version" ]
+then
+    echo "---------------------------"
+    echo "Corner DE Make Wrapper 1.00"
+    echo "---------------------------"
+    make --version
+    exit 0
+fi
+
+# find tag file and determine -C option
+
+TAG_FILE=`ls .tag.svnco-* 2> /dev/null`
+OPTION_C=
+
+if [ -f "$TAG_FILE" ]
+then
+    MF_PATH="`cat $TAG_FILE`"
+    if [ -f $MF_PATH/Makefile ]
+    then
+        OPTION_C="-C $MF_PATH"
+    fi
+fi
+
+make $OPTION_C $*
+
+

@@ -1,0 +1,191 @@
+#!/bin/bash
+
+### Corner DE CD 1.2 ###
+
+# if not "@*", act like normal cd but keep the history
+if [ "${1:0:1}" != "@" ]; then
+    if [ "$1" == "" ]; then
+        pushd ~  > /dev/null
+    else
+        pushd $1 > /dev/null
+    fi
+    if [ $? -eq 0 ]; then
+        # try to remove identical history
+        if [ "`dirs +0`" == "`dirs +1`" ]; then
+            popd -n +1 > /dev/null
+        fi
+    fi
+    return 0
+fi
+
+# if "@@", back to history
+if [ "$1" == "@@" ]; then
+    #pushd +1 > /dev/null # for ring-mode
+    popd > /dev/null # for stack-mode
+    if [ $? == 0 ]; then
+        pwd
+    else
+        popd -n +1 > /dev/null # remove bad entry
+    fi
+    return 0
+fi
+
+_arg=${1:1}
+
+# if it is "@=*", set bookmark
+if [ "${_arg:0:1}" == "=" ]; then
+    export CDECD_BM${_arg:1}=`pwd`
+    unset _arg
+    return 0
+fi
+
+# if it is "@0*" ~ "@9*", goto bookmark
+if [ "$_arg" \> "/" -a "$_arg" \< ":" ]; then
+    eval "'cd' \$CDECD_BM$_arg"
+    pwd
+    unset _arg
+    return 0
+fi
+
+# try to find project root
+_prj=
+_dir=`pwd`
+while [ "$_dir" != "" ]; do
+    #echo dir: $_dir
+    if [ -f $_dir/TOOLPATH -a -f $_dir/Makefile -a -d $_dir/linux -a -d $_dir/busybox -a -d $_dir/rootfs ]; then
+        _prj=$_dir
+        #echo project: $_prj
+        break
+    fi
+    _dir=`echo $_dir | sed 's:^\(.*\)\(/.*\)$:\1:g'`
+done
+unset _dir
+ 
+# if not Corner DE layout, show error
+if [ "$_prj" == "" ]; then
+    if [ "$PRJROOT" == "" ]; then
+        echo "cdecd: Corner DE layout not found"
+        unset _prj
+        return -1
+    else
+        _prj=$PRJROOT
+    fi
+fi
+export PRJROOT=$_prj
+ 
+# user-defined shortcuts
+if [ -f ~/bin/cdecd-shortcut ]; then
+    _tab=`cat ~/bin/cdecd-shortcut`
+    for _iii in $_tab
+    do
+        if [ "$_arg" == "${_iii%%:*}" ]; then
+            eval "'cd' ${_iii##*:}"
+            unset _iii _tab _arg
+            return 0
+        fi
+    done
+    unset _iii _tab
+fi           
+ 
+
+# sub-functions
+
+cdpeer ()
+{
+    local _dst=...
+    local _iii
+
+    if [ -f .tag.svnco-* ]; then
+        _dst=`cat .tag.svnco-*`
+    else
+        local _pwd=`pwd`
+        local _xxx=`echo $_pwd | sed "s:^$_prj/::g"`
+        case "${_xxx%%/*}" in
+        "linux"     ) _dst=$_prj/linux/src;;
+        "busybox"   ) _dst=$_prj/busybox/src;;
+        *           )
+
+            # mapping table
+            local _tab
+            _tab="$_tab rootfs:src rootfs/src:.."
+            _tab="$_tab tools/src:../compo tools/compo:../src"
+            _tab="$_tab rootfs/src/amit_priv:$_prj/rootfs/amit_priv"
+            _tab="$_tab rootfs/src/amit_open:$_prj/rootfs/amit_open"
+            _tab="$_tab rootfs/src/open_src:$_prj/rootfs/open_src"
+            _tab="$_tab rootfs/amit_priv:$_prj/rootfs/src/amit_priv"
+            _tab="$_tab rootfs/amit_open:$_prj/rootfs/src/amit_open"
+            _tab="$_tab rootfs/open_src:$_prj/rootfs/src/open_src"
+
+            # lookup in mapping table
+            for _iii in $_tab
+            do
+                if [ "$_xxx" == "${_iii%%:*}" ]; then
+                    _dst=${_iii##*:}
+                    break   
+                fi
+            done
+
+            # not in mapping table, try Makefile
+            if [ "$_dst" == "..." ]; then
+                if [ -f Makefile ]; then
+                    _dst=../../src`sed -n '/COMPO_DIR :=/p' Makefile | sed 's:^.*)::g' |uniq`
+                fi
+            fi;;
+        esac
+    fi
+
+    if [ -d $_dst ]; then
+        _cd2=$_dst
+    else
+        echo "cdecd: no peer!"
+    fi
+}
+
+# try to match shortcut
+_cd2=
+
+case "$_arg" in
+    ""      ) cdpeer;;
+    "/"     ) _cd2=$_prj;;
+    "l"     ) _cd2=$_prj/linux;;
+    "ls"    ) _cd2=$_prj/linux/src;;
+    "lr"    ) _cd2=$_prj/linux/root;;
+    "b"     ) _cd2=$_prj/busybox;;
+    "bs"    ) _cd2=$_prj/busybox/src;;
+    "br"    ) _cd2=$_prj/busybox/root;;
+    "r"     ) _cd2=$_prj/rootfs;;
+    "ra"    ) _cd2=$_prj/rootfs/amit_open;;
+    "rp"    ) _cd2=$_prj/rootfs/amit_priv;;
+    "ro"    ) _cd2=$_prj/rootfs/open_src;;
+    "rg"    ) _cd2=$_prj/rootfs/glue;;
+    "rs"    ) _cd2=$_prj/rootfs/src;;
+    "rsa"   ) _cd2=$_prj/rootfs/src/amit_open;;
+    "rsp"   ) _cd2=$_prj/rootfs/src/amit_priv;;
+    "rso"   ) _cd2=$_prj/rootfs/src/open_src;;
+    "rr"    ) _cd2=$_prj/rootfs/root;;
+    "t"     ) _cd2=$_prj/tools;;
+    "tc"    ) _cd2=$_prj/tools/compo;;
+    "ts"    ) _cd2=$_prj/tools/src;;
+    "i"     ) _cd2=$_prj/image;;
+    "ir"    ) _cd2=$_prj/image/root;;
+    *       ) echo "cdecd: unknown shortcut"
+esac
+
+# change to matched dir
+if [ "$_cd2" != "" ]; then
+#   'cd' $_cd2
+    pushd $_cd2 > /dev/null
+    if [ $? -eq 0 ]; then
+        pwd
+        # try to remove identical history
+        if [ "`dirs +0`" == "`dirs +1`" ]; then
+            popd -n +1 > /dev/null
+        fi
+    fi
+fi
+
+unset _arg
+unset _prj
+unset _cd2
+unset cdpeer
+

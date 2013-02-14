@@ -1,0 +1,5 @@
+#!/bin/sh
+
+svn diff $* > diff.log
+vim diff.log
+rm -f diff.log

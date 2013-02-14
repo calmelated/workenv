@@ -1,0 +1,4 @@
+#!/bin/sh
+
+svn log -v $* | more
+

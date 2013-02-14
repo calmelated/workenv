@@ -1,0 +1,4 @@
+#!/bin/sh
+svn st $* | grep -v ^? | awk '{print $2}' > list
+svn up `cat list`
+rm -f list 

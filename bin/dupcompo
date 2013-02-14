@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ "$1" == "" -o "$2" == "" ]; then
+    echo "Usage: $0 SOURCE-DIR DEST-DIR"
+    exit -1
+fi
+
+if [ ! -d $1 ]; then
+    echo "$0: $1 does not exist"
+    exit -1
+fi
+
+if [ -d $2 ]; then
+    echo "$0: $2 already exist"
+    exit -1
+fi
+
+mkdir $2
+tar c -C $1  --exclude .svn . | tar xv -C $2
+
+

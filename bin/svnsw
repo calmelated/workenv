@@ -1,0 +1,57 @@
+#!/bin/sh
+                               
+usage() {
+    echo "Usage: "
+    echo "$0 -     : Switch to the last svn path"
+    #echo "$0 /    : Switch to svn://x.x.x.x/"
+    echo "$0 trunk : Switch to svn://x.x.x.x/trunk"
+    echo "$0 @123  : Switch to svn://x.x.x.x/branches/123"
+    echo "$0 123   : Switch to svn://x.x.x.x/123"
+    echo "$0 @@    : Switch from svn://x.x.x.x/branches/123/456.mk to svn://x.x.x.x/trunk/123/456.mk"
+    echo "$0 -s    : Show all switchable branches"
+    echo "$0 -h    : This help"
+    exit 0; 
+}
+
+svnsw_last=".svnsw.last"
+root="`svn info|awk '{if(NR == 3)print}'|cut -d: -f2,3,4|cut -d' ' -f2`"
+from="`svn info|grep URL|cut -f2 -d' '`"
+[ "$from" = "" ] && echo "No a Svn directory  !! " && exit 0
+[ "$root" = "" ] && echo "No a Svn directory  !! " && exit 0
+[ "$1"    = "" ] && echo "No traget directory !! " && usage && exit 0
+
+if [ "$1" = "-h" ]; then
+    usage
+elif [ "$1" = "@@" ]; then
+    to="$root/trunk/${from#*/branches/*/}"
+elif [ "$1" = "-" ]; then
+    if [ -e $svnsw_last ]; then
+        to="`cat $svnsw_last`"
+        if [ "$to" = "" ]; then
+            rm -f $svnsw_last 
+            echo "Empty switch cache !"
+            exit 0
+        fi
+    else
+        echo "No any switch cache !"
+        exit 0
+    fi
+elif [ "$1" = "-s" ]; then
+    echo ""
+    svn ls $root/branches|more
+    exit 0;
+elif [ "$1" = "/" ]; then
+    to="$root"
+elif [ "$1" = "trunk" ]; then
+    to="$root/trunk"
+elif [ "`expr substr $1 1 1`" = "@" ]; then
+    to="$root/branches/${1#@}"
+else 
+    to="$root/$1"
+fi
+
+echo "$from" > $svnsw_last
+svn switch $to
+echo "Switch SVN path to $to"
+
+

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+svn_path="$1"
+svn_from="$2"
+svn_end="$3"
+
+[ "$svn_path" = "" ] && echo "No give SVN path !!" && exit 1
+[ "$svn_from" = "" ] && echo "No give SVN start version !!" && exit 1
+[ "$svn_end"  = "" ] && echo "No give SVN end version !!" && exit 1
+
+rm -rf svnpatch
+mkdir -p svnpatch
+svn diff -x "--ignore-eol-style" $svn_path -r $svn_from:$svn_end > svnpatch/patch.all
+cat svnpatch/patch.all | grep ^Index:    > svnpatch/patch.list
+svnpatch.py svnpatch/patch.all
+                                
+for f in svnpatch/*.diff; do
+    sed -i -e "s/\r/ /g" $f
+    continue
+
+    patch -p0 --dry-run < $f
+    patch_stat="`echo $?`"
+    if [ "$patch_stat" = "0" ]; then
+        patch -p0 < $f
+        echo "$f"  >> svnpatch/patch.success
+    else
+        echo "$f"  >> svnpatch/patch.failed
+        read -p pause 
+    fi
+done 
+
+echo "Patch Done !!"

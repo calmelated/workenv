@@ -1,0 +1,43 @@
+#!/bin/sh
+      
+usage() {
+    echo "Usage:"
+    echo "$0  [name] : create branches from current path. "
+    echo "   e.g. if branches name is abc, $0 would create the branches like this"
+    echo "        svn://x.x.x.x/branches/123 -> svn://x.x.x.x/branches/abc"
+    echo "        svn://x.x.x.x/trunk/       -> svn://x.x.x.x/abc"
+    echo ""
+    echo "$0 @[name] : create branches into branches directory. "
+    echo "   e.g. if branches name is abc, $0 would create the branches like this"
+    echo "        svn://x.x.x.x/branches/123 -> svn://x.x.x.x/branches/abc"
+    echo "        svn://x.x.x.x/trunk/       -> svn://x.x.x.x/branches/abc"
+    echo ""
+    exit 0
+}
+
+[ "$1" = "" ] && echo "No traget directory !! " && usage && exit 0
+
+root="`svn info|awk '{if(NR == 3)print}'|cut -d: -f2,3,4|cut -d' ' -f2`"
+from="`svn info|grep URL|cut -f2 -d' '`"
+[ "$from" = "" ] && echo "No a Svn directory  !! " && exit 0
+[ "$root" = "" ] && echo "No a Svn directory  !! " && exit 0
+
+if [ "`expr substr $1 1 1`" = "@" ]; then 
+    to="$root/branches/${1#@}"
+else
+    to="`dirname $from`/$1"
+fi
+
+[ "${to#$root/}" = "${from#$root/}" ] && echo "Cannot create branches from the same path !" && exit 0
+if [ "`svn info $to`" != "" ]; then 
+    echo "$to already existed !!" 
+    exit 0
+fi
+
+svn cp "$from" "$to" -m "Create ${to#$root/} from ${from#$root/} by $USER"
+if [ "$?" = "0" ]; then
+    svn switch $to
+    echo "Switch SVN Path to $to"
+    echo ""
+fi
+
