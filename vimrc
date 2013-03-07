@@ -29,7 +29,7 @@ set nobomb
 " 保留 BOM
 "set bomb
 
-"set mouse=a
+set mouse=a
 set paste
 
 " 過長不要斷行
@@ -184,6 +184,8 @@ set dictionary+=~/.vim/funclist.txt
 " {{{ vim 開 tab => imap <C-n> <Esc>:w<CR><Esc>
 " NERDTree 關閉按 q 即可
 nnoremap <silent> <F2> :w!<CR>
+map <F2><F2><F2> <ESC>:wq!<CR>
+nnoremap <silent> <F3> :q!<CR>
 "map <F3> :set cursorline!<CR><Bar>:echo "Highlight active cursor line: " . strpart("OffOn", 3 * &cursorline, 3)<CR>
 map <F4> :set spell!<CR><Bar>:echo "Spell check: " . strpart("OffOn", 3 * &spell, 3)<CR>
 nnoremap <silent> <F5> :NERDTree<CR>
@@ -202,6 +204,16 @@ map <C-t>q <ESC>:qall<CR>
 "map <C-t>n <ESC>:tabnew<CR><ESC>:e
 ":nmap <C-tab> :tabnext<cr>
 "map <C-w> <ESC>:tabclose<CR>
+
+" Visual ?? tab ? shif-tab ???
+map <Tab> >>
+map <S-Tab> <<
+
+" ??MS???
+vmap <C-c> "yy
+vmap <C-x> "yd
+nmap <C-v> "yp
+vmap <C-v> "yp
 
 " vim -p filename1 filname2
 " :tabe filename
