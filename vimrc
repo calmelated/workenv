@@ -89,8 +89,8 @@ syntax on
 " 顏色 Templates
 " /usr/share/vim/vim70/colors/desert.vim
 "colorscheme default
-"colorscheme desert
-colorscheme darkblue
+colorscheme desert
+"colorscheme darkblue
 "hi Comment ctermbg=black ctermfg=darkcyan
 hi Comment term=standout cterm=bold ctermfg=0
 hi Search term=reverse ctermbg=3 ctermfg=0
@@ -212,7 +212,7 @@ map <S-Tab> <<
 " ??MS???
 vmap <C-c> "yy
 vmap <C-x> "yd
-nmap <C-v> "yp
+"nmap <C-v> "yp
 vmap <C-v> "yp
 
 " vim -p filename1 filname2

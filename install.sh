@@ -25,6 +25,7 @@ ln -sf .workenv/screenrc    .screenrc
 ln -sf .workenv/tmux.conf   .tmux.conf
 ln -sf .workenv/gitconfig   .gitconfig
 ln -sf .workenv/gitignore   .gitignore
+ln -sf .workenv/jshintrc    .jshintrc
 #ln -sf .workenv/git_diff_wrapper git_diff_wrapper
 
 ln  -sf .workenv/vimrc      .vimrc
