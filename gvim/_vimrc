@@ -87,12 +87,12 @@ set history=50
 filetype on
 set number
 set cindent
-"set autoindent
+set autoindent
 "set smartindent
 
 " \t ?? 4?????
 set expandtab
-set shiftwidth=4
+                set shiftwidth=4
 set softtabstop=4
 set tabstop=4
 
@@ -252,6 +252,8 @@ map <C-t>q <ESC>:qall<CR>
 " Visual ?? tab ? shif-tab ???
 map <Tab> >>
 map <S-Tab> <<
+vmap <Tab> >
+vmap <S-Tab> <
 
 
 " vim -p filename1 filname2
@@ -306,8 +308,8 @@ autocmd BufWritePre * call RemoveTrailingWhitespace()
 " }}}
 " {{{ tab ?????, ???????.
 " <s-v> + <tab> ? <s-v> + <s-tab>
-xmap   <tab> >gv
-xmap   <s-tab> <gv
+"map   <tab> >gv
+"map   <s-tab> <gv
 " }}}
 
 " {{{ python indent
@@ -374,44 +376,44 @@ augroup AutoLoadSettion
 augroup END
 " }}}
 
-" {{{ for Bundle
-filetype off
-filetype plugin indent on     " required!
-"set rtp+=~/.workenv/vundle/
-set rtp+=C:\\Program\\\ Files\\Vim\\vundle
-call vundle#rc()
-
-Bundle 'gmarik/vundle'
-" original repos on github
-Bundle 'tpope/vim-fugitive'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-Bundle 'tpope/vim-rails.git'
-
-" vim-scripts repos
-Bundle 'L9'
-Bundle 'FuzzyFinder'
-Bundle 'taglist.vim'
-Bundle 'SuperTab'
-Bundle 'vimwiki'
-Bundle 'winmanager'
-Bundle 'bufexplorer.zip'
-Bundle 'The-NERD-tree'
-Bundle 'matrix.vim--Yang'
-Bundle 'FencView.vim'
-Bundle 'Conque-Shell'
-Bundle 'Vimpress'
-Bundle 'Markdown'
-Bundle 'LaTeX-Suite-aka-Vim-LaTeX'
-Bundle 'c.vim'
-Bundle 'snipMate'
-
-" non github repos
-Bundle 'git://git.wincent.com/command-t.git'
-
-" Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
-" }}}
+"   " {{{ for Bundle
+"   filetype off
+"   filetype plugin indent on     " required!
+"   "set rtp+=~/.workenv/vundle/
+"   set rtp+=C:\\Program\\\ Files\\Vim\\vundle
+"   call vundle#rc()
+"
+"   Bundle 'gmarik/vundle'
+"   " original repos on github
+"   Bundle 'tpope/vim-fugitive'
+"   Bundle 'Lokaltog/vim-easymotion'
+"   Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+"   Bundle 'tpope/vim-rails.git'
+"
+"   " vim-scripts repos
+"   Bundle 'L9'
+"   Bundle 'FuzzyFinder'
+"   Bundle 'taglist.vim'
+"   Bundle 'SuperTab'
+"   Bundle 'vimwiki'
+"   Bundle 'winmanager'
+"   Bundle 'bufexplorer.zip'
+"   Bundle 'The-NERD-tree'
+"   Bundle 'matrix.vim--Yang'
+"   Bundle 'FencView.vim'
+"   Bundle 'Conque-Shell'
+"   Bundle 'Vimpress'
+"   Bundle 'Markdown'
+"   Bundle 'LaTeX-Suite-aka-Vim-LaTeX'
+"   Bundle 'c.vim'
+"   Bundle 'snipMate'
+"
+"   " non github repos
+"   Bundle 'git://git.wincent.com/command-t.git'
+"
+"   " Brief help
+"   " :BundleList          - list configured bundles
+"   " :BundleInstall(!)    - install(update) bundles
+"   " :BundleSearch(!) foo - search(or refresh cache first) for foo
+"   " :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+"   " }}}

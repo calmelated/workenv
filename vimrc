@@ -57,7 +57,7 @@ set history=50
 filetype on
 set number
 set cindent
-"set autoindent
+set autoindent
 "set smartindent
 
 " \t 會以 4個空格代替
