@@ -1,0 +1,13 @@
+#!/bin/sh
+
+curpath="`pwd`"
+while [ true ]; do
+    #echo "-> $curpath"
+    if [ "$curpath" = "/" -o "$curpath" = "" ]; then
+        break;
+    elif [ -e "$curpath/README.md" -a -e "$curpath/index.php" -a -e "$curpath/build" ]; then
+        echo "$curpath" ; break;
+    else
+        curpath="${curpath%/*}"
+    fi
+done
