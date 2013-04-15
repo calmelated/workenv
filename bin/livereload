@@ -4,15 +4,22 @@ init() {
     bundle init
 
     echo "
-    gem 'guard'
-    gem 'guard-livereload'
-    gem 'rb-inotify'
+        gem 'guard'
+        gem 'guard-livereload'
+        gem 'rb-inotify'
     " >> Gemfile
 
     bundle exec guard init livereload
+    cp $HOME/bin/livereload.sample Guardfile
 }
 
-if [ ! -e Gemfile ]; then
+if [ "$1" = "clear" -o "$1" = "remove" -o "$1" = "del" -o "$1" = "delete" ]; then
+    rm -f Gemfile Gemfile.lock Guardfile
+    echo "Remove LiveReload configuration !!"
+    exit
+fi
+
+if [ ! -e Gemfile -o ! -e Guardfile ]; then
     init
 fi
 
