@@ -358,6 +358,7 @@ Bundle 'Markdown'
 Bundle 'LaTeX-Suite-aka-Vim-LaTeX'
 Bundle 'c.vim'
 Bundle 'snipMate'
+Bundle 'ack.vim'
 
 " non github repos
 Bundle 'git://git.wincent.com/command-t.git'
