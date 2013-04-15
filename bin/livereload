@@ -1,0 +1,19 @@
+#!/bin/sh
+
+init() {
+    bundle init
+
+    echo "
+    gem 'guard'
+    gem 'guard-livereload'
+    gem 'rb-inotify'
+    " >> Gemfile
+
+    bundle exec guard init livereload
+}
+
+if [ ! -e Gemfile ]; then
+    init
+fi
+
+bundle exec guard
