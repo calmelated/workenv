@@ -12,6 +12,7 @@ die() {
 
 [ -e "$CONFIG_HOME" ] && die "$CONFIG_HOME already exists."
 
+sudo apt-get install -y git htop mytop screen tmux vim nodejs cscope
 git clone https://github.com/calmelated/workenv.git "$CONFIG_HOME"
 
 cd "$CONFIG_HOME"
@@ -28,6 +29,7 @@ ln -sf .workenv/gitignore   .gitignore
 ln -sf .workenv/jshintrc    .jshintrc
 #ln -sf .workenv/git_diff_wrapper git_diff_wrapper
 
+mkdir -p ~/vi_backup/
 ln  -sf .workenv/vimrc      .vimrc
 #ln -sf .workenv/.vim/.vimrc .vimrc
 #cd "${CONFIG_HOME}/.vim"
