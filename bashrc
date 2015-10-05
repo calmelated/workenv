@@ -91,7 +91,7 @@ fi
 set nobeep
 # xwindow 要用這個關
 #xset b off
-setterm -blength 0
+#setterm -blength 0
 
 export PATH=$HOME/bin:$PATH
 #export LANG=zh_TW.UTF-8

@@ -12,8 +12,10 @@ die() {
 
 [ -e "$CONFIG_HOME" ] && die "$CONFIG_HOME already exists."
 
-sudo apt-get install -y git htop screen tmux vim nodejs cscope
-cd /usr/bin/ ; sudo ln -sf /usr/bin/nodejs node; cd -
+sudo apt-get update --fix-missing
+sudo apt-get install -y git htop screen tmux vim nodejs cscope exuberant-ctags lrzsz mysql-client
+cd /usr/bin/ ; sudo ln -sf /usr/bin/nodejs node; cd - ;
+cd /bin ; sudo rm -f /bin/sh ; sudo ln -sf /bin/bash sh; cd - ;
 
 git clone https://github.com/calmelated/workenv.git "$CONFIG_HOME"
 
