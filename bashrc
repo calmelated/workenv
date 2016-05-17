@@ -10,6 +10,7 @@ HISTCONTROL=ignorespace # 空白的不紀錄進 history 中(security)
 HISTFILESIZE=5000
 HISTSIZE=5000
 #HISTIGNORE='&:rm:ls:[bf]g:exit' # 不紀錄, rm, exit
+GREP_OPTIONS="--color=auto --exclude=.svn --exclude=.git"
 
 # If running interactively, then:
 if [ "$PS1" ]; then
@@ -34,10 +35,10 @@ if [ "$PS1" ]; then
     alias l='ls -CFh'
     alias vi='vim'
     alias d='ls */ -d'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-    alias cgrep='grep -Hnr --include=*.{c,h} --color=auto'
+    alias grep='grep $GREP_OPTIONS'
+    alias fgrep='fgrep $GREP_OPTIONS'
+    alias egrep='egrep $GREP_OPTIONS'
+    alias cgrep='grep -Hnr --include=*.{c,h} $GREP_OPTIONS'
     alias diff='colordiff -Naur'
     alias top='htop'
     alias route='route -n'
@@ -98,7 +99,7 @@ export PATH=$HOME/bin:$PATH
 #export LC_ALL=zh_TW.UTF-8
 export EDITOR=vim
 export SVN_EDITOR=vim
-export GREP_OPTIONS="--exclude=.svn --exclude=.git"
+unset GREP_OPTIONS
 
 # 設 less
 #export LC_CTYPE=it_CH.ISO_8859-1
