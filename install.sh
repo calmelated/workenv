@@ -12,13 +12,34 @@ die() {
 
 [ -e "$CONFIG_HOME" ] && die "$CONFIG_HOME already exists."
 
+read -p "Use NCHC sources.list ? (y or n) " yesNo
+if [ "$yesNo" = "y" -o "$yesNo" = "Y" ]; then 
+    echo "Apply NCHC sources.list ..."
+    sudo sed -i 's/tw.archive.ubuntu.com/free.nchc.org.tw/g' /etc/apt/sources.list 
+    sudo sed -i 's/security.ubuntu.com/free.nchc.org.tw/g' /etc/apt/sources.list 
+    sudo sed -i 's/archive.ubuntu.com/free.nchc.org.tw/g' /etc/apt/sources.list 
+fi
+
+# Insall tools
 sudo apt-get update --fix-missing
-sudo apt-get install -y git htop screen tmux vim nodejs cscope exuberant-ctags lrzsz mysql-client
-cd /usr/bin/ ; sudo ln -sf /usr/bin/nodejs node; cd - ;
+sudo apt-get install -y git htop screen tmux vim npm nodejs cscope exuberant-ctags lrzsz mysql-client \
+software-properties-common python-software-properties mytop colordiff iftop curl wget
+
+# Use Bash
 cd /bin ; sudo rm -f /bin/sh ; sudo ln -sf /bin/bash sh; cd - ;
 
-git clone https://github.com/calmelated/workenv.git "$CONFIG_HOME"
+# Clear apt-get cache
+apt-get autoremove -y
+dpkg-reconfigure -plow unattended-upgrades
 
+# Lastest stable Node.js 
+npm cache clean -f
+npm install -g n
+n stable
+node -v
+
+# Checkout environment 
+git clone https://github.com/calmelated/workenv.git "$CONFIG_HOME"
 cd "$CONFIG_HOME"
 git submodule update --init
 
