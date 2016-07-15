@@ -10,27 +10,35 @@ die() {
     exit 1
 }
 
+[ "`id -u`" != "0" ] && die "This tool is root only !"
 [ -e "$CONFIG_HOME" ] && die "$CONFIG_HOME already exists."
 
-read -p "Use NCHC sources.list ? (y or n) " yesNo
-if [ "$yesNo" = "y" -o "$yesNo" = "Y" ]; then 
+read -p "In Docker ? (y or n) " inDocker
+read -p "Use NCHC sources.list ? (y or n) " useNCHC
+
+if [ "$useNCHC" = "y" -o "$useNCHC" = "Y" ]; then 
     echo "Apply NCHC sources.list ..."
-    sudo sed -i 's/tw.archive.ubuntu.com/free.nchc.org.tw/g' /etc/apt/sources.list 
-    sudo sed -i 's/security.ubuntu.com/free.nchc.org.tw/g' /etc/apt/sources.list 
-    sudo sed -i 's/archive.ubuntu.com/free.nchc.org.tw/g' /etc/apt/sources.list 
+    sed -i 's/tw.archive.ubuntu.com/free.nchc.org.tw/g' /etc/apt/sources.list 
+    sed -i 's/security.ubuntu.com/free.nchc.org.tw/g' /etc/apt/sources.list 
+    sed -i 's/archive.ubuntu.com/free.nchc.org.tw/g' /etc/apt/sources.list 
 fi
 
 # Insall tools
-sudo apt-get update --fix-missing
-sudo apt-get install -y git htop screen tmux vim npm nodejs cscope exuberant-ctags lrzsz mysql-client \
+apt-get update --fix-missing
+apt-get install -y git htop screen tmux vim npm nodejs cscope exuberant-ctags lrzsz mysql-client \
 software-properties-common python-software-properties mytop colordiff iftop curl wget
 
 # Use Bash
-cd /bin ; sudo rm -f /bin/sh ; sudo ln -sf /bin/bash sh; cd - ;
+cd /bin ; rm -f /bin/sh ; ln -sf /bin/bash sh; cd - ;
 
 # Clear apt-get cache
 apt-get autoremove -y
-dpkg-reconfigure -plow unattended-upgrades
+if [ "$inDocker" = "y" -o "$inDocker" = "Y" ]; then 
+    sleep 0 # nothing
+else  
+    # update security patch 
+    dpkg-reconfigure -plow unattended-upgrades
+fi
 
 # Lastest stable Node.js 
 npm cache clean -f
