@@ -26,7 +26,7 @@ fi
 # Insall tools
 apt-get update --fix-missing
 apt-get install -y git htop screen tmux vim npm nodejs cscope exuberant-ctags lrzsz mysql-client \
-software-properties-common python-software-properties mytop colordiff iftop curl wget
+software-properties-common python-software-properties mytop colordiff iftop curl wget iputils-ping net-tools
 
 # Use Bash
 cd /bin ; rm -f /bin/sh ; ln -sf /bin/bash sh; cd - ;
