@@ -60,11 +60,11 @@ set cindent
 set autoindent
 "set smartindent
 
-" \t 會以 4個空格代替
+" \t 會以 2個空格代替
 set expandtab
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
+set shiftwidth=2
+set softtabstop=2
+set tabstop=2
 
 " :sp 開檔時, 上面會列出所有檔案
 set wildmenu
